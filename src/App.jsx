@@ -47,30 +47,44 @@ const Button = ({ children, onClick, variant = 'primary', className = "", icon =
 };
 
 // ==========================================
-// 🔴 ENTER YOUR GOOGLE SCRIPT WEB APP URL 🔴
+// 🔴 ENTER YOUR DISCORD WEBHOOK URL HERE 🔴
 // ==========================================
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx_IYPk8c_eBIHfDk_0GdlvQjGNNebPgmF9IqJTT9QqGkD8DMKKvV9ectc67pTT4TD39g/exec"; 
+const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1488993933361938434/727KO_nuM26gTbH5ImWT7McfszrIrK7iuUjfcB_dFyX3it6mlBGdArECBa7oavF_Ok4J"; 
 
-const submitToGoogleSheets = async (data, formName) => {
-  const formData = new FormData();
-  formData.append('FormType', formName);
-  Object.keys(data).forEach(key => formData.append(key, data[key]));
+const submitToDiscord = async (data, formName, color) => {
+  // Format the data into Discord Embed Fields
+  const fields = Object.entries(data)
+    .filter(([key, value]) => value && value.toString().trim() !== '') // Remove empty fields
+    .map(([key, value]) => {
+      // Clean up key names for the embed display
+      const cleanKey = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+      return { name: cleanKey, value: value.toString(), inline: key !== 'notes' }; // Notes take full width
+    });
+
+  const payload = {
+    username: "Taha Acts Leads",
+    embeds: [{
+      title: `🚨 New Lead Received: ${formName}`,
+      color: color, // Decides the color strip on the left of the message
+      fields: fields,
+      timestamp: new Date().toISOString(),
+      footer: { text: "Taha Acts Web Portal" }
+    }]
+  };
 
   try {
-    // Mode no-cors is used to bypass CORS restrictions from the browser to Google Script
-    await fetch(GOOGLE_SCRIPT_URL, {
+    await fetch(DISCORD_WEBHOOK_URL, {
       method: "POST",
-      mode: "no-cors",
-      body: formData
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
     return { success: true };
   } catch (error) {
-    console.error("Submission failed", error);
+    console.error("Discord submission failed", error);
     return { success: false };
   }
 };
 
-// Modified VendorBadge to handle both Marquee (no-wrap) and Static Grid (wrapped)
 const VendorBadge = ({ name, icon: Icon, marquee = false }) => (
   <div className={`flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 p-4 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md hover:bg-white/10 transition-colors cursor-default text-center ${marquee ? 'whitespace-nowrap px-6 py-4' : 'h-full'}`}>
     {Icon && <Icon size={20} className="text-slate-400 shrink-0" />}
@@ -96,7 +110,8 @@ const FormB2B = ({ onBack }) => {
     delete finalData.objectiveOther;
     delete finalData.scopeOther;
 
-    await submitToGoogleSheets(finalData, "Tech & AI Services");
+    // Send to Discord (Cyan Color code: 601314)
+    await submitToDiscord(finalData, "Tech & AI Services", 601314);
     setLoading(false);
     setStep(4);
   };
@@ -195,7 +210,8 @@ const FormEnergy = ({ onBack }) => {
     if (finalData.facility === 'Other') finalData.facility = `Other: ${finalData.facilityOther}`;
     delete finalData.facilityOther;
 
-    await submitToGoogleSheets(finalData, "TA Energy Solar");
+    // Send to Discord (Emerald Color code: 1084227)
+    await submitToDiscord(finalData, "TA Energy Solar", 1084227);
     setLoading(false);
     setStep(3);
   };
@@ -281,7 +297,8 @@ const FormRihla = ({ onBack }) => {
     if (finalData.volume === 'Other') finalData.volume = `Other: ${finalData.volumeOther}`;
     delete finalData.volumeOther;
 
-    await submitToGoogleSheets(finalData, "Rihla AI Demo");
+    // Send to Discord (Blue Color code: 3447003)
+    await submitToDiscord(finalData, "Rihla AI Demo", 3447003);
     setLoading(false);
     setStep(3);
   };
@@ -370,7 +387,6 @@ const HeroSection = ({ navigateTo }) => (
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
       <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-        {/* Adjusted Headings for Mobile */}
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium text-white tracking-tight mb-6 sm:mb-8 font-heading leading-[1.1]">
           Architecting <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Digital & Physical</span> Infrastructure.
         </h1>
@@ -470,7 +486,6 @@ const EnergySection = ({ navigateTo }) => (
         <div className="w-full lg:w-1/2">
           <GlassCard className="p-6 sm:p-8 md:p-10 border-t-2 border-t-emerald-500/50">
             <h4 className="text-base sm:text-lg font-semibold text-white mb-4 sm:mb-6 font-heading border-b border-white/10 pb-3 sm:pb-4 text-center lg:text-left">Certified Tier-1 Equipment Partners</h4>
-            {/* Fixed Vendor Grid for Mobile: 1 col on super small screens, 2 cols normally, gap adjusted */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <VendorBadge name="Canadian Solar" />
               <VendorBadge name="Sunova Solar" />
