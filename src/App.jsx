@@ -80,16 +80,19 @@ const VendorBadge = ({ name, icon: Icon }) => (
   </div>
 );
 
-// --- SECTIONS WITH VIDEO BACKGROUNDS ---
+// --- SECTIONS WITH SHARPER VIDEO BACKGROUNDS ---
 
 const HeroSection = ({ navigateTo }) => (
   <div className="relative min-h-screen flex items-center pt-20 border-b border-white/10 overflow-hidden">
     <div className="absolute inset-0 z-0">
-      <video autoPlay loop muted playsInline poster="hero-bg.jpg" className="w-full h-full object-cover opacity-80">
+      <video autoPlay loop muted playsInline poster="hero-bg.jpg" className="w-full h-full object-cover opacity-90">
+        {/* Bulletproof sources: tries webm, then mp4, then online fallback */}
         <source src="hero-bg.webm" type="video/webm" />
-        <source src="https://cdn.coverr.co/videos/coverr-server-room-4113/1080p.mp4" type="video/mp4" /> {/* Fallback preview */}
+        <source src="hero-bg.mp4" type="video/mp4" />
+        <source src="https://cdn.coverr.co/videos/coverr-server-room-4113/1080p.mp4" type="video/mp4" /> 
       </video>
-      <div className="absolute inset-0 bg-slate-950/70 backdrop-blur-[4px]"></div>
+      {/* Reduced blur to 1px and slightly reduced opacity so video is much clearer */}
+      <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-[1px]"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent"></div>
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
     </div>
@@ -104,7 +107,7 @@ const HeroSection = ({ navigateTo }) => (
           Architecting <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">Digital & Physical</span> Infrastructure.
         </h1>
         
-        <p className="text-xl text-slate-300 mb-12 max-w-2xl font-body leading-relaxed font-light drop-shadow-md">
+        <p className="text-xl text-slate-200 mb-12 max-w-2xl font-body leading-relaxed font-light drop-shadow-lg">
           Based in Lahore, Taha Acts is a premier technology holding company. We engineer highly scalable cloud environments, custom AI pipelines, and industrial-grade solar networks.
         </p>
         
@@ -124,8 +127,10 @@ const TechStackSection = ({ navigateTo }) => (
     <div className="absolute inset-0 z-0">
       <video autoPlay loop muted playsInline poster="tech-bg.jpg" className="w-full h-full object-cover">
         <source src="tech-bg.webm" type="video/webm" />
+        <source src="tech-bg.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-[6px]"></div>
+      {/* Reduced blur from 6px to 2px, reduced darkness from 90 to 80 */}
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px]"></div>
     </div>
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -185,8 +190,10 @@ const EnergySection = ({ navigateTo }) => (
     <div className="absolute inset-0 z-0">
       <video autoPlay loop muted playsInline poster="energy-bg.jpg" className="w-full h-full object-cover">
         <source src="energy-bg.webm" type="video/webm" />
+        <source src="energy-bg.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[6px]"></div>
+      {/* Reduced blur from 6px to 2px, reduced darkness to 75 */}
+      <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]"></div>
     </div>
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -196,7 +203,7 @@ const EnergySection = ({ navigateTo }) => (
           <img src="TA Energy Logo.png" alt="TA Energy" className="h-14 object-contain mb-8" onError={(e) => { e.target.style.display='none'; }} />
           <h2 className="text-sm font-semibold tracking-[0.2em] text-emerald-400 uppercase mb-3 font-heading">Physical Infrastructure</h2>
           <h3 className="text-3xl md:text-5xl font-semibold text-white font-heading mb-6 leading-tight">Industrial-Grade <br/>Solar Solutions.</h3>
-          <p className="text-slate-400 font-body font-light text-lg mb-8 leading-relaxed">
+          <p className="text-slate-300 font-body font-light text-lg mb-8 leading-relaxed">
             We provide complete solar solutions, from high-efficiency 2-panel residential setups to massive industrial grids. By utilizing premium Tier-1 panels, advanced inverters, and expert engineering, we ensure maximum ROI and energy independence.
           </p>
           <Button variant="energy" onClick={() => navigateTo('form-energy')} icon={<Zap size={18}/>}>Calculate Solar ROI</Button>
@@ -225,15 +232,17 @@ const RihlaSection = ({ navigateTo }) => (
     <div className="absolute inset-0 z-0">
       <video autoPlay loop muted playsInline poster="rihla-bg.jpg" className="w-full h-full object-cover">
         <source src="rihla-bg.webm" type="video/webm" />
+        <source src="rihla-bg.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-slate-950/85 backdrop-blur-[6px]"></div>
+      {/* Reduced blur from 6px to 2px, reduced darkness to 75 */}
+      <div className="absolute inset-0 bg-slate-950/75 backdrop-blur-[2px]"></div>
     </div>
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
       <img src="Rihla AI Logo.png" alt="Rihla AI" className="h-20 object-contain mb-8 mx-auto" onError={(e) => { e.target.style.display='none'; }} />
       <h2 className="text-sm font-semibold tracking-[0.2em] text-blue-400 uppercase mb-3 font-heading">SaaS & Automation</h2>
       <h3 className="text-3xl md:text-5xl font-semibold text-white font-heading mb-6 leading-tight">The Future of <br/>Travel Automation.</h3>
-      <p className="text-slate-400 font-body font-light text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+      <p className="text-slate-300 font-body font-light text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
         Rihla is a fully humanized AI Travel Expert. We provide comprehensive B2B software solutions for travel agencies, enabling them to automate thousands of flight searches, hotel bookings, transport arrangements, and customer voice chats simultaneously.
       </p>
       <div className="flex justify-center">
